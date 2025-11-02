@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-SEND | Gestion des transactions</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+body { font-family: Arial, sans-serif; background-color:#f4f4f4; margin:0; }
+header { background-color:#000; color:#FFD700; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; }
+header .brand { display:flex; align-items:center; }
+header .brand img { height:50px; margin-right:10px; }
+header nav span { margin-right:20px; font-weight:bold; color:#FFD700; }
+header nav button { padding:5px 10px; margin-left:10px; background-color:#FFD700; border:none; border-radius:3px; cursor:pointer; }
+header nav button:hover { background-color:#e6c200; }
+
+main { max-width:900px; margin:30px auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.2); }
+h2 { text-align:center; margin-bottom:20px; }
+
+table { width:100%; border-collapse:collapse; margin-top:20px; }
+th, td { padding:10px; border:1px solid #ccc; text-align:center; }
+th { background-color:#000; color:#FFD700; }
+tr:nth-child(even) { background-color:#f2f2f2; }
+</style>
+</head>
+<body>
+
+<header>
+<div class="brand">
+<img src="logo.png" alt="Logo I-SEND">
+<h1>I-SEND</h1>
+</div>
+<nav id="navLinks"></nav>
+</header>
+
+<main>
+<h2>Gestion des transactions</h2>
+<table id="transactionsTable">
+<thead>
+<tr>
+<th>Date</th>
+<th>Expéditeur</th>
+<th>Pays</th>
+<th>Montant</th>
+<th>Devise</th>
+<th>Destinataire</th>
+<th>Téléphone</th>
+<th>Mode de réception</th>
+<th>Mode de paiement</th>
+<th>Statut</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</main>
+
+<script>
+// Vérifier session utilisateur
+const connectedUser = localStorage.getItem('connectedUser');
+const nav = document.getElementById('navLinks');
+
+if(!connectedUser){
+    alert("Vous devez être connecté pour accéder à cette page.");
+    window.location.href = "login.html";
+} else {
+    nav.innerHTML = `
+        <span>Connecté : ${connectedUser}</span>
+        <button id="logoutBtn">Déconnecter</button>
+    `;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('connectedUser');
+        window.location.href = "login.html";
+    });
+}
+
+// Récupérer transactions
+let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+const tbody = document.querySelector('#transactionsTable tbody');
+
+transactions.forEach(tx => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>${tx.date}</td>
+        <td>${tx.expediteur}</td>
+        <td>${tx.pays}</td>
+        <td>${tx.montant}</td>
+        <td>${tx.devise}</td>
+        <td>${tx.destinataire}</td>
+        <td>${tx.telDestinataire}</td>
+        <td>${tx.reseau}</td>
+        <td>${tx.paiement}</td>
+        <td>${tx.statut}</td>
+    `;
+    tbody.appendChild(tr);
+});
+</script>
+
+</body>
+</html>

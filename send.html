@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-SEND | Envoyer de l'argent</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+body { font-family: Arial, sans-serif; background-color:#f4f4f4; margin:0; }
+header { background-color: #000; color: #FFD700; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+header .brand { display:flex; align-items:center; }
+header .brand img { height:50px; margin-right:10px; }
+header nav span, header nav a { color:#FFD700; margin-left:20px; text-decoration:none; font-weight:bold; }
+header nav button { padding:5px 10px; margin-left:10px; background-color:#FFD700; border:none; border-radius:3px; cursor:pointer; }
+header nav button:hover { background-color:#e6c200; }
+
+main { max-width:600px; margin:30px auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.2); }
+h2 { text-align:center; margin-bottom:20px; }
+form label { display:block; margin-top:10px; font-weight:bold; }
+form input, form select { width:100%; padding:8px; margin-top:5px; border-radius:5px; border:1px solid #ccc; }
+form button { width:100%; padding:10px; margin-top:20px; background-color:#000; color:#FFD700; border:none; border-radius:5px; font-weight:bold; cursor:pointer; }
+form button:hover { background-color:#333; }
+</style>
+</head>
+<body>
+
+<header>
+<div class="brand">
+<img src="logo.png" alt="Logo I-SEND">
+<h1>I-SEND</h1>
+</div>
+<nav id="navLinks"></nav>
+</header>
+
+<main>
+<h2>Envoyer de l’argent</h2>
+<form id="sendForm">
+<label>Nom de l’expéditeur</label>
+<input type="text" id="expediteur" required>
+
+<label>Pays d’origine</label>
+<input type="text" id="pays" required>
+
+<label>Montant</label>
+<input type="number" id="montant" required>
+
+<label>Devise</label>
+<select id="devise" required>
+<option value="USD">USD</option>
+<option value="EUR">EUR</option>
+<option value="CAD">CAD</option>
+</select>
+
+<label>Nom du destinataire</label>
+<input type="text" id="destinataire" required>
+
+<label>Téléphone du destinataire</label>
+<input type="text" id="telDestinataire" required placeholder="+261...">
+
+<label>Mode de réception</label>
+<select id="reseau" required>
+<option value="Mvola">Mvola</option>
+<option value="Orange Money">Orange Money</option>
+<option value="Espèces">Espèces</option>
+</select>
+
+<label>Mode de paiement</label>
+<select id="paiement" required>
+<option value="direct">Direct / Espèces</option>
+<option value="interac">Interac / Paiement direct</option>
+<option value="enLigne">PayPal / Carte</option>
+</select>
+
+<button type="submit">Envoyer</button>
+</form>
+</main>
+
+<script>
+// Vérifier session utilisateur
+const connectedUser = localStorage.getItem('connectedUser');
+const nav = document.getElementById('navLinks');
+
+if(!connectedUser){
+    alert("Vous devez être connecté pour accéder à cette page.");
+    window.location.href = "login.html";
+} else {
+    nav.innerHTML = `
+        <span>Connecté : ${connectedUser}</span>
+        <button id="logoutBtn">Déconnecter</button>
+    `;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('connectedUser');
+        window.location.href = "login.html";
+    });
+}
+
+// Gestion du formulaire d'envoi
+const sendForm = document.getElementById('sendForm');
+
+sendForm.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const transaction = {
+        expediteur: document.getElementById('expediteur').value.trim(),
+        pays: document.getElementById('pays').value.trim(),
+        montant: document.getElementById('montant').value.trim(),
+        devise: document.getElementById('devise').value,
+        destinataire: document.getElementById('destinataire').value.trim(),
+        telDestinataire: document.getElementById('telDestinataire').value.trim(),
+        reseau: document.getElementById('reseau').value,
+        paiement: document.getElementById('paiement').value,
+        statut: "En attente",
+        date: new Date().toLocaleString()
+    };
+
+    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    transactions.push(transaction);
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+
+    alert("Transaction enregistrée avec succès !");
+    sendForm.reset();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-SEND | Accueil</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+/* Styles supplémentaires pour header connecté */
+header { background-color: #000; color: #FFD700; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+header .brand { display: flex; align-items: center; }
+header .brand img { height: 50px; margin-right: 10px; }
+header nav a, header nav span { color: #FFD700; margin-left: 20px; text-decoration: none; font-weight: bold; }
+header nav span { margin-right: 20px; }
+header nav button { padding: 5px 10px; margin-left: 10px; background-color:#FFD700; border:none; border-radius:3px; cursor:pointer; }
+header nav button:hover { background-color:#e6c200; }
+
+main { padding: 20px; max-width: 1100px; margin: auto; }
+.hero { text-align:center; margin-top:50px; }
+.hero h2 { font-size: 28px; margin-bottom: 15px; }
+.hero p { font-size: 16px; margin-bottom: 20px; }
+.hero .btn { padding: 10px 20px; background-color: #FFD700; color: #000; text-decoration: none; font-weight:bold; border-radius:5px; }
+.hero .btn:hover { background-color: #e6c200; }
+
+footer { text-align:center; padding:20px; background-color:#111; color:#FFD700; margin-top:50px; }
+</style>
+</head>
+<body>
+
+<header>
+<div class="brand">
+<img src="logo.png" alt="Logo I-SEND">
+<h1>I-SEND</h1>
+</div>
+<nav id="navLinks">
+<a href="login.html" id="loginLink">Se connecter</a>
+</nav>
+</header>
+
+<main>
+<section class="hero">
+<h2>Envoyez de l’argent partout dans le monde</h2>
+<p>I-SEND vous permet d’envoyer de l’argent depuis n’importe quel pays vers Madagascar, directement sur Mvola, Orange Money ou en espèces.</p>
+<a href="login.html" class="btn" id="mainBtn">Commencer maintenant</a>
+</section>
+</main>
+
+<footer>
+&copy; 2025 I-SEND. Tous droits réservés.
+</footer>
+
+<script>
+// Gestion de session utilisateur
+const nav = document.getElementById('navLinks');
+const mainBtn = document.getElementById('mainBtn');
+const user = localStorage.getItem('connectedUser');
+
+if(user){
+    nav.innerHTML = `
+        <span>Connecté : ${user}</span>
+        <a href="send.html">Envoyer</a>
+        <button id="logoutBtn">Déconnecter</button>
+    `;
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('connectedUser'); // Supprime session
+        window.location.reload(); // Recharge la page
+    });
+
+    // Rediriger le bouton principal vers send.html
+    mainBtn.setAttribute('href','send.html');
+} else {
+    // Si pas connecté, bouton redirige vers login.html
+    mainBtn.setAttribute('href','login.html');
+}
+</script>
+
+</body>
+</html>

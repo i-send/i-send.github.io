@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-SEND | Connexion</title>
+<style>
+body { font-family: Arial, sans-serif; background-color:#000; color:#FFD700; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+form { background-color:#111; padding:25px; border-radius:10px; width:300px; box-shadow:0 0 15px rgba(255,255,0,0.5); text-align:center; }
+input, button { width:100%; padding:10px; margin-bottom:15px; border-radius:5px; border:none; font-size:14px; }
+button { background-color:#FFD700; color:#000; font-weight:bold; cursor:pointer; }
+button:hover { background-color:#e6c200; }
+h2 { text-align:center; margin-bottom:20px; }
+</style>
+</head>
+<body>
+
+<form id="loginForm">
+<h2>Connexion</h2>
+<label>Email</label>
+<input type="email" id="email" required placeholder="exemple@email.com">
+<label>Mot de passe</label>
+<input type="password" id="password" required placeholder="Mot de passe">
+<button type="submit">Se connecter</button>
+</form>
+
+<script>
+// Récupère les utilisateurs stockés
+let users = JSON.parse(localStorage.getItem('users')) || [];
+
+const form = document.getElementById('loginForm');
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    const user = users.find(u => u.email === email);
+
+    if(user){
+        // Email existant → vérifier mot de passe
+        if(user.password === password){
+            localStorage.setItem('connectedUser', email);
+            window.location.href = "index.html";
+        } else {
+            alert("Mot de passe incorrect !");
+        }
+    } else {
+        // Email non trouvé → redirige vers création de compte
+        alert("Email inconnu, vous allez être redirigé vers la création de compte.");
+        localStorage.setItem('newUserEmail', email); // mémorise email pour pré-remplir register
+        window.location.href = "register.html";
+    }
+});
+</script>
+
+</body>
+</html>

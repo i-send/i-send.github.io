@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I-SEND | Créer un compte</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background-color: #000; color: #FFD700; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .register-container { background-color: #111; padding: 40px 30px; border-radius: 8px; box-shadow: 0 0 15px rgba(255,215,0,0.3); width: 100%; max-width: 400px; text-align: center; }
+    .register-container img { height: 60px; margin-bottom: 15px; }
+    .register-container h2 { margin-bottom: 20px; color: #FFD700; }
+    .register-container input { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #FFD700; background-color: #222; color: #FFD700; }
+    .register-container input::placeholder { color: #ccc; }
+    .register-container button { width: 100%; padding: 12px; background-color: #FFD700; color: #000; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+    .register-container button:hover { background-color: #e6c200; }
+    .register-container .login-link { margin-top: 15px; display: block; color: #FFD700; text-decoration: none; }
+    .register-container .login-link:hover { text-decoration: underline; }
+    .error { color: red; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+<div class="register-container">
+  <img src="logo.png" alt="Logo I-SEND">
+  <h2>Créer un compte</h2>
+  <div class="error" id="errorMsg"></div>
+  <input type="text" id="nom" placeholder="Nom complet" required>
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="password" id="password" placeholder="Mot de passe" required>
+  <input type="password" id="confirmPassword" placeholder="Confirmer le mot de passe" required>
+  <button onclick="register()">S'inscrire</button>
+  <a href="login.html" class="login-link">Déjà un compte ? Se connecter</a>
+</div>
+
+<script>
+  function register() {
+    const nom = document.getElementById('nom').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    const errorMsg = document.getElementById('errorMsg');
+
+    if (!nom || !email || !password || !confirmPassword) {
+      errorMsg.textContent = "Veuillez remplir tous les champs.";
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      errorMsg.textContent = "Les mots de passe ne correspondent pas.";
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    if(users.find(u => u.email === email)) {
+      errorMsg.textContent = "Cet email est déjà utilisé.";
+      return;
+    }
+
+    users.push({ nom, email, password });
+    localStorage.setItem('users', JSON.stringify(users));
+
+    alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+    window.location.href = "login.html";
+  }
+</script>
+
+</body>
+</html>
