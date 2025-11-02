@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I-SEND | Contact</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="logo.png" alt="Logo I-SEND">
+    <h1>I-SEND</h1>
+  </div>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="send.html">Envoyer</a>
+    <a href="about.html">À propos</a>
+    <a href="contact.html" class="active">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Contactez-nous</h2>
+  <form id="contactForm">
+    <label>
+      Votre nom
+      <input type="text" name="name" placeholder="Ex: Jean Rakoto" required>
+    </label>
+
+    <label>
+      Email
+      <input type="email" name="email" placeholder="exemple@mail.com" required>
+    </label>
+
+    <label>
+      Sujet
+      <input type="text" name="subject" placeholder="Ex: Question sur un transfert" required>
+    </label>
+
+    <label>
+      Message
+      <textarea name="message" rows="5" placeholder="Votre message ici..." required></textarea>
+    </label>
+
+    <button type="submit">Envoyer</button>
+  </form>
+</main>
+
+<footer>
+  &copy; 2025 I-SEND. Tous droits réservés.
+</footer>
+
+</body>
+</html>
